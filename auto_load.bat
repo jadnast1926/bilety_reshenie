@@ -1,20 +1,20 @@
 @echo off
 chcp 65001 > nul
 
-:: =================== НАСТРОЙКИ ПУТЕЙ ===================
-set PLATFORM="C:\Program Files (x86)\1cv8t\8.3.27.1508\bin\1cv8t.exe"
-set BASE_PATH="C:\Users\Дамир\OneDrive\Документы\OperAccounting"
-set EXPORT_ROOT="C:\Users\Дамир\билеты_по_платформе_решение"
+:: =================== НАСТРОЙКИ ПУТЕЙ (БЕЗ КАВЫЧЕК!) ===================
+set PLATFORM=C:\Program Files (x86)\1cv8t\8.3.27.1508\bin\1cv8t.exe
+set BASE_PATH=C:\Users\Дамир\OneDrive\Документы\OperAccounting
+set EXPORT_ROOT=C:\Users\Дамир\билеты_по_платформе_решение
 set DB_USER=""
 set DB_PASS=""
-:: =======================================================
+:: =======================================================================
 
 echo ===================================================
 echo   АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ БИЛЕТА В GIT
 echo ===================================================
 echo.
 
-:: Автоматическая проверка и восстановление .gitignore, если его стерло
+:: Автоматическая проверка и восстановление .gitignore
 cd /d "%EXPORT_ROOT%"
 if not exist ".gitignore" (
     echo === Восстановление .gitignore... ===
@@ -23,7 +23,7 @@ if not exist ".gitignore" (
 
 set /p TASK_NAME="Введи название задачи или номер билета (например Bilet_01): "
 
-:: Точный путь к папке конкретного билета
+:: Склеиваем чистый путь без кавычек
 set "EXPORT_DIR=%EXPORT_ROOT%\%TASK_NAME%"
 
 echo === Шаг 1. Безопасная очистка папки для задачи %TASK_NAME%... ===
@@ -37,7 +37,8 @@ if exist "%EXPORT_DIR%" (
 )
 
 echo === Шаг 2. Выгрузка конфигурации 1С в папку %TASK_NAME%... ===
-%PLATFORM% DESIGNER /F "%BASE_PATH%" /N %DB_USER% /P %DB_PASS% /DumpConfigToFiles "%EXPORT_DIR%" /Out "%EXPORT_ROOT%\1c_logs.txt"
+:: Оборачиваем переменные в кавычки прямо в команде запуска
+"%PLATFORM%" DESIGNER /F "%BASE_PATH%" /N %DB_USER% /P %DB_PASS% /DumpConfigToFiles "%EXPORT_DIR%" /Out "%EXPORT_ROOT%\1c_logs.txt"
 
 echo === Шаг 3. Индексация файлов в Git... ===
 cd /d "%EXPORT_ROOT%"
