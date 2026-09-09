@@ -13,27 +13,34 @@ echo ===================================================
 echo   АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ БИЛЕТА В GIT
 echo ===================================================
 echo.
-:: Скрипт останавливается и ждет, пока ты введешь имя папки (например: Bilet_01)
-set /p TASK_NAME="Введи название задачи или номер билета (БЕЗ ПРОБЕЛОВ, латиницей или цифрами, например Bilet_01): "
+set /p TASK_NAME="Введи название задачи или номер билета (например Bilet_01): "
 
-:: Формируем точный путь к изолированной папке для этого билета
-set EXPORT_DIR=%EXPORT_ROOT%\%TASK_NAME%
+:: Точный путь к папке конкретного билета
+set "EXPORT_DIR=%EXPORT_ROOT%\%TASK_NAME%"
 
-echo.
-echo === Шаг 1. Изолированная очистка папки для %TASK_NAME%... ===
-:: Если папка для этого билета уже была, очищаем только её, другие билеты скрипт НЕ тронет!
+echo === Шаг 1. Безопасная очистка папки для задачи %TASK_NAME%... ===
+:: Переходим в корень репозитория
+cd /d "%EXPORT_ROOT%"
+
+:: Если папка билета уже существует, заходим в неё и удаляем только её содержимое
 if exist "%EXPORT_DIR%" (
-    for /d %%i in ("%EXPORT_DIR%\*") do rmdir /s /q "%%i"
-    for %%i in ("%EXPORT_DIR%\*") do del /q "%%i"
+    cd /d "%EXPORT_DIR%"
+    :: Удаляем все подпапки внутри папки билета
+    for /d %%i in (*) do rmdir /s /q "%%i"
+    :: Удаляем все файлы внутри папки билета
+    del /q *.*
+    :: Возвращаемся в корень
+    cd /d "%EXPORT_ROOT%"
 ) else (
+    :: Если папки не было — просто создаем её
     mkdir "%EXPORT_DIR%"
 )
 
 echo === Шаг 2. Выгрузка конфигурации 1С в папку %TASK_NAME%... ===
-%PLATFORM% DESIGNER /F %BASE_PATH% /N %DB_USER% /P %DB_PASS% /DumpConfigToFiles "%EXPORT_DIR%" /Out "%EXPORT_ROOT%\1c_logs.txt" -NoTruncate
+%PLATFORM% DESIGNER /F "%BASE_PATH%" /N %DB_USER% /P %DB_PASS% /DumpConfigToFiles "%EXPORT_DIR%" /Out "%EXPORT_ROOT%\1c_logs.txt"
 
 echo === Шаг 3. Индексация файлов в Git... ===
-cd /d %EXPORT_ROOT%
+cd /d "%EXPORT_ROOT%"
 git add .
 
 echo === Шаг 4. Создание коммита для %TASK_NAME%... ===
