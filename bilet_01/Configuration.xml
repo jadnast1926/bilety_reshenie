@@ -286,7 +286,7 @@
 			<InformationRegister>СведенияОСотрудниках</InformationRegister>
 			<InformationRegister>УчетнаяПолитика</InformationRegister>
 			<AccumulationRegister>ОстаткиНоменклатуры</AccumulationRegister>
-			<AccumulationRegister>СебестоимостьСписания</AccumulationRegister>
+			<AccumulationRegister>Продажи</AccumulationRegister>
 			<ChartOfCharacteristicTypes>СвойстваОбъектов</ChartOfCharacteristicTypes>
 			<ChartOfCharacteristicTypes>ВидыСубконто</ChartOfCharacteristicTypes>
 			<ChartOfAccounts>Управленческий</ChartOfAccounts>

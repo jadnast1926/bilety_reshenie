@@ -27,7 +27,7 @@
 			<ExtendedTooltip name="СуммаПоДокументуРасширеннаяПодсказка" id="9"/>
 		</InputField>
 		<InputField name="Склад" id="10">
-			<DataPath>Объект.Склад</DataPath>
+			<DataPath>1/0:5e6cdefc-d164-474c-840e-46ea47f75afc</DataPath>
 			<EditMode>EnterOnInput</EditMode>
 			<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 			<ContextMenu name="СкладКонтекстноеМеню" id="11"/>
@@ -131,7 +131,7 @@
 				<DefaultVisible>false</DefaultVisible>
 			</Item>
 			<Item>
-				<Command>AccumulationRegister.СебестоимостьСписания.StandardCommand.OpenByRecorder</Command>
+				<Command>1:a3c10ca0-6508-4b4e-80da-b9cbe7219d40</Command>
 				<Type>Auto</Type>
 				<DefaultVisible>false</DefaultVisible>
 			</Item>
